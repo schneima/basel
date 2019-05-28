@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using Basel.Backend.BusinessLogic;
 using Basel.Backend.Contracts;
+using System.Linq;
 
 namespace Tests
 {
@@ -14,7 +15,7 @@ namespace Tests
         [Test]
         public void ReadTestData()
         {
-            var expensesFile = "./TestData/expenses_sample.csv";
+            var expensesFile = "./TestData/comdirect_expenses_sample.csv";
             var sut = new ComdirectParser(expensesFile);
             var success = sut.ParseData();
 
@@ -22,6 +23,7 @@ namespace Tests
 
             var data = sut.GetParsedData();
             Assert.IsNotNull(data, "Returned data is null. Expected valid collection.");
+            Assert.IsTrue(data.ToList().Count > 0, "Parsed data is empty.");
 
         }
     }

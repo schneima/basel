@@ -25,7 +25,6 @@ namespace Basel.Backend.BusinessLogic
 
         public IEnumerable<ComdirectExpense> GetParsedData()
         {
-
             if (_dataSuccessfullyParsed)
             {
                 return _parsedData;
@@ -39,25 +38,25 @@ namespace Basel.Backend.BusinessLogic
         public bool ParseData()
         {
             var engine = new FileHelperEngine<ComdirectExpense>();
-            
-            // Switch error mode on
             engine.ErrorManager.ErrorMode = ErrorMode.SaveAndContinue;
 
-            // To Read Use:
             var result = engine.ReadFile(_fileToParse);
 
             _parsedData = result.Where(r => r.Amount < 0).ToList();
 
-            // result is now an array of Customer
-
-            // To Write Use:
-            //engine.WriteFile("FileOut.txt", result);
-
+            if( engine.ErrorManager.HasErrors)
+            {
+                foreach (var error in engine.ErrorManager.Errors)
+                {
+                    // TODO: use standard logger
+                    Console.WriteLine($"Error during parsing:");
+                    Console.WriteLine(error.ExceptionInfo.Message);
+                }
+            }
 
             _dataSuccessfullyParsed = true;
 
             return _dataSuccessfullyParsed;
-
         }
     }
 }

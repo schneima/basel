@@ -6,8 +6,7 @@ using FileHelpers;
 
 namespace Basel.Backend.Models
 {
-
-    [DelimitedRecord(",")]
+    [DelimitedRecord(";")]
     public class ComdirectExpense
     {
         public Expense GetBaseExpenseRepresentation()
@@ -19,15 +18,13 @@ namespace Basel.Backend.Models
         public DateTime BookingDate;
 
         [FieldConverter(ConverterKind.Date, "dd.MM.yyyy")]
-
         public DateTime ProcessDate;
 
         public string TransactionType;
 
         public string Bokokingtext;
 
+        [FieldConverter(ConverterKind.Decimal, ",")]
         public decimal Amount;
-
-
     }
 }
